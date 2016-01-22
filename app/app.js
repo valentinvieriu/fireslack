@@ -135,4 +135,4 @@ angular.module('angularfireSlackApp', ['firebase', 'angular-md5', 'ui.router'])
 
     $urlRouterProvider.otherwise('/');
   })
-  .constant('FirebaseUrl', 'https://tc-fireslack.firebaseio.com/');
+  .constant('FirebaseUrl', 'https://sapientslack.firebaseio.com/');
