@@ -66,26 +66,27 @@ module.exports = function (grunt) {
     // The actual grunt server settings
     connect: {
       options: {
-        port: 4000,
+        port: '<%= grunt.option("port") ? grunt.option("port") : 9000%>',
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: '0.0.0.0',
-        livereload: 4002
+        livereload: 35729
       },
       livereload: {
         options: {
           open: true,
           middleware: function (connect) {
+            var serveStatic = require('serve-static');
             return [
-              connect.static('.tmp'),
+              serveStatic('.tmp'),
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                serveStatic('./bower_components')
               ),
               connect().use(
                 '/app/styles',
-                connect.static('./app/styles')
+                serveStatic('./app/styles')
               ),
-              connect.static(appConfig.app)
+              serveStatic(appConfig.app)
             ];
           }
         }
@@ -94,14 +95,15 @@ module.exports = function (grunt) {
         options: {
           port: 9001,
           middleware: function (connect) {
+            var serveStatic = require('serve-static');
             return [
-              connect.static('.tmp'),
-              connect.static('test'),
+              serveStatic('.tmp'),
+              serveStatic('test'),
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                serveStatic('./bower_components')
               ),
-              connect.static(appConfig.app)
+              serveStatic(appConfig.app)
             ];
           }
         }
@@ -110,6 +112,11 @@ module.exports = function (grunt) {
         options: {
           open: true,
           base: '<%= yeoman.dist %>'
+        },
+        middleware: function( connect, options, middlewares ) {
+            var compression = require( 'compression' );
+            middlewares.unshift( compression() );
+            return middlewares;
         }
       }
     },
